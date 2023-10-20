@@ -16,7 +16,7 @@ function Home() {
               </span>
             </ul>
           </div>
-          <Link className="border-2 rounded-sm border-accent hover:bg-accent hover:text-white transition-all md:w-3/12 p-2 font-Roboto text-center text-xl my-5" to="/login">Create Account</Link>
+          <Link className="border-2 rounded-sm border-white  hover:border-accent bg-accent hover:bg-blue-900 text-white transition-all duration-300 md:w-3/12 p-2 font-Roboto text-center text-xl my-5" to="/signup">Create Account</Link>
       </div>
     </div>
   )
