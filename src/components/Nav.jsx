@@ -9,7 +9,7 @@ function Nav() {
 
   let navigate = useNavigate();
 
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [Name, setName] = useState("");
   const [user,loading,error] = useAuthState(auth);
 
 
@@ -22,7 +22,7 @@ function Nav() {
             const userData = await getDoc(doc(db, "users",
             user.uid))
 
-            setPhotoUrl(userData.data().photoUrl);
+            setName(userData.data().name);
         }
     })
   })
@@ -50,7 +50,7 @@ function Nav() {
       <div className="grid">
         {user ? <div className="flex mx-auto">
                     <Link to="/user" className="mx-10">Report</Link>
-                    <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
+                    <h1 className="cursor-pointer" onClick={signUserOut}>{Name}-Sign Out</h1>
             </div>: <Link to="/signup">
             Login
         </Link>}

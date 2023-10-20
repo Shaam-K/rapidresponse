@@ -12,9 +12,9 @@ function CreateDetails() {
   useEffect(() => {
     async () => {
       if (loading) return;
-      if (error) navigate("/login");
+      if (error) navigate("/signup");
       if (!user) {
-        navigate("/");
+        navigate("/signup");
       }
 
       getDoc(doc(db, "users", user.uid)).then((person) => {
