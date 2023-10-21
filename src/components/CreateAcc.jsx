@@ -37,7 +37,7 @@ function CreateAcc() {
       });
     } catch(err) {
       alert("Error Logging In")
-      navigate('/')
+      navigate('/signup')
     }
     navigate('/create')
   }
