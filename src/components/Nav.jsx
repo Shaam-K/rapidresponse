@@ -38,17 +38,17 @@ function Nav() {
   return (
     <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-accent text-white">
     <div className="flex justify-between md:w-9/12 w-11/12 p-2 my-2">
-     <div className="flex justify-center cursor-pointer">
+     <div className="flex cursor-pointer">
       <Link to="/">
         <img
-          src=""
+          src="./logo.png"
           alt="RRID-logo"
           className=""
           style={{'width': '140px', 'objectFit': 'contain'}}
         />
       </Link> 
     </div>
-      <div className="grid">
+      <div className="grid place-content-center font-semibold">
         {user ? <div className="flex mx-auto">
                     <Link to="/user" className="mx-10">Report</Link>
                     <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out ({Name})</h1>
