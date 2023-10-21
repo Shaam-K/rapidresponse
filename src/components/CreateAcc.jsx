@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { auth, provider, db } from "../config/firebase";
 import { useEffect } from "react";
-import { signInWithPopup, browserPopupRedirectResolver} from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getDoc, setDoc, doc } from "firebase/firestore";
 
@@ -20,7 +20,7 @@ function CreateAcc() {
 
   const signInGoogle = () => {
     try {
-      signInWithPopup(auth, provider, browserPopupRedirectResolver).then(async(result) => {
+      signInWithPopup(auth, provider).then(async(result) => {
         if(result.user) {
           const userData = await getDoc(doc(db, "users", result.user.uid))
 
