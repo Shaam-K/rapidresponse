@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Nav from './components/Nav';
 import CreateAcc from './components/CreateAcc';
 import CreateDetails from './components/CreateDetails';
+import Record from './components/Record';
 
 
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home/>}></Route>
         <Route path="/signup" element={<CreateAcc/>}></Route>
         <Route path="/create" element={<CreateDetails/>}></Route>
+        <Route path="/record/:recordId" element={<Record/>}></Route>
       </Routes>
     </Router>
   )

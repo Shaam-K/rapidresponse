@@ -10,6 +10,7 @@ function Nav() {
   let navigate = useNavigate();
 
   const [Name, setName] = useState("");
+  const [Token, setToken] = useState("");
   const [user,loading,error] = useAuthState(auth);
 
 
@@ -23,6 +24,7 @@ function Nav() {
             user.uid))
 
             setName(userData.data().name);
+            setToken(userData.data().token)
         }
     })
     ();
@@ -50,7 +52,11 @@ function Nav() {
     </div>
       <div className="grid place-content-center font-semibold">
         {user ? <div className="flex mx-auto">
-                    <Link to="/user" className="mx-10">Report</Link>
+                    <div onClick={() => {
+                        window.location.href = '/record/' + Token
+                    }} className="mx-10 cursor-pointer">
+                        My Report
+                    </div>
                     <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out ({Name})</h1>
             </div>: <Link to="/signup">
             Login
