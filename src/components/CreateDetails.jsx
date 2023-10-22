@@ -1,14 +1,22 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import QRCode from "react-qr-code";
+
+import { toPng } from 'html-to-image';
 
 
 function CreateDetails() {
   let navigate = useNavigate();
 
+  const elementRef = useRef(null);
+
   const [user, loading, error] = useAuthState(auth);
+  
+
+  const [id, setId] = useState("");
 
   const [Name, setName] = useState("");
   const [phoneNo, setphoneNo] = useState("");
@@ -36,9 +44,9 @@ function CreateDetails() {
         }
         const userData = await getDoc(doc(db, "users", user.uid))
 
-        const token = userData.data().token
+        setId(userData.data().token)
 
-        const recordData = await getDoc(doc(db, "records", token))
+        const recordData = await getDoc(doc(db, "records", id))
 
         if (recordData.data() !== undefined) {
             navigate('/')
@@ -46,6 +54,19 @@ function CreateDetails() {
     })
     ();
   }, [user,loading,error])
+
+  const htmlToImageConvert = () => {
+    toPng(elementRef.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-id.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
 
 
@@ -70,6 +91,8 @@ function CreateDetails() {
         armForce: armForce
     })
 
+    htmlToImageConvert();
+
     navigate('/')
   }
 
@@ -84,111 +107,158 @@ function CreateDetails() {
         <div className="md:w-9/12 w-11/12">
             <h1 className="text-4xl font-Roboto my-5">Enter Your Details</h1>
                 <h1 className="text-3xl font-Roboto text-zinc-800 my-5">Step 1: Creating ID Card</h1>
-                <div className="grid my-5 gap-7 w-2/4">
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">NAME</label>
-                        <input type="text" className="font-OpenSans" placeholder="Enter Your Name" value={Name} onChange={(e) => {
-                            setName(e.target.value)
-                        }}/>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">PHONE NO</label>
-                        <input type="text" className="font-OpenSans" placeholder="Enter Your Phone No" value={phoneNo} onChange={(e) => {
-                            setphoneNo(e.target.value)
-                        }}/>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">EMERGENCY CONTACT - 1</label>
-                        <span className="flex">
-                            <input type="text"  className="w-full font-OpenSans" placeholder="Enter Relation" value={emergencyNoRelation1} onChange={(e) => {
-                                setemergencyNoRelation1(e.target.value)
-                            }} />
-                            <input type="text" className="w-full font-OpenSans" placeholder="Enter Phone no" value={emergencyNo1} onChange={(e) => {
-                                setemergencyNo1(e.target.value)
-                            }} />
-                        </span>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">EMERGENCY CONTACT - 2</label>
+                <div className="grid grid-cols-2">
+                    <div className="grid my-5 gap-7">
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">NAME</label>
+                            <input type="text" className="font-OpenSans" placeholder="Enter Your Name" value={Name} onChange={(e) => {
+                                setName(e.target.value)
+                            }}/>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">PHONE NO</label>
+                            <input type="text" className="font-OpenSans" placeholder="Enter Your Phone No" value={phoneNo} onChange={(e) => {
+                                setphoneNo(e.target.value)
+                            }}/>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">EMERGENCY CONTACT - 1</label>
                             <span className="flex">
-                                <input type="text" className="w-full font-OpenSans" placeholder="Enter Relation" value={emergencyNoRelation2} onChange={(e) => {
-                                    setemergencyNoRelation2(e.target.value)
+                                <input type="text"  className="w-full font-OpenSans" placeholder="Enter Relation" value={emergencyNoRelation1} onChange={(e) => {
+                                    setemergencyNoRelation1(e.target.value)
                                 }} />
-                                <input type="text" className="w-full font-OpenSans" placeholder="Enter Phone No" value={emergencyNo2} onChange={(e) => {
-                                    setemergencyNo2(e.target.value)
+                                <input type="text" className="w-full font-OpenSans" placeholder="Enter Phone no" value={emergencyNo1} onChange={(e) => {
+                                    setemergencyNo1(e.target.value)
                                 }} />
                             </span>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">EMERGENCY CONTACT - 2</label>
+                                <span className="flex">
+                                    <input type="text" className="w-full font-OpenSans" placeholder="Enter Relation" value={emergencyNoRelation2} onChange={(e) => {
+                                        setemergencyNoRelation2(e.target.value)
+                                    }} />
+                                    <input type="text" className="w-full font-OpenSans" placeholder="Enter Phone No" value={emergencyNo2} onChange={(e) => {
+                                        setemergencyNo2(e.target.value)
+                                    }} />
+                                </span>
+                        </div>
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">BLOOD TYPE</label>
+                            <input type="text" className="font-OpenSans" placeholder="Enter Your Blood Type" value={bloodType} onChange={(e) => {
+                                setbloodType(e.target.value)
+                            }}/>
+                        </div>  
+                        <h1 className="text-3xl font-Roboto text-zinc-800 mt-5">Step 2: Creating Report</h1>
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">YOUR AGE</label>
+                            <input type="number" min={0} className="font-OpenSans"
+                            value={Age} onChange={(e) => {
+                                setAge(e.target.value)
+                            }}/>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">GENDER</label>
+                            <select name="" id="" className="font-OpenSans" value={Gender} onChange={(e) => {
+                                setGender(e.target.value)
+                            }}>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">MEDICATIONS</label>
+                            <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" value={EmerMed} onChange={(e) => {
+                                setEmerMed(e.target.value)
+                            }} placeholder="List of medicines that you use on a regular basis"></textarea>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">PREVIOUS TREATMENTS</label>
+                            <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Any treatments we need to know aobut?" value={prevTreat} onChange={(e) => {
+                                setprevTreat(e.target.value)
+                            }}></textarea>
+                        </div>  
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">ALLERGIES</label>
+                            <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Any allergies? If so list them" value={Allergies} onChange={(e) => {
+                                setAllergies(e.target.value)
+                            }}></textarea>
+                        </div>  
+
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">FAMILY HISTORY</label>
+                            <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Does your family have a history of any disease?" value={famChronic} onChange={(e) => {
+                                setfamChronic(e.target.value)
+                            }}></textarea>
+                        </div>  
+
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">SMOKE OR ALCOHOL USE</label>
+                            <select name="" id="" className="font-OpenSans" value={smokeAlc}
+                            onChange={(e) => {
+                                setsmokeAlc(e.target.value)
+                            }}>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>  
+
+                        <div className="grid gap-3">
+                            <label className="font-Roboto text-accent font-bold italic">HAVE YOU SERVED IN ARMED FORCES</label>
+                            <select name="" id="" className="font-OpenSans" value={armForce} onChange={(e) => {
+                                setarmForce(e.target.value)
+                            }}>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                            <button type="button" onClick={submitReport} className="bg-accent text-xl p-3 px-5 text-white font-OpenSans hover:bg-blue-600 transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>    
                     </div>
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">BLOOD TYPE</label>
-                        <input type="text" className="font-OpenSans" placeholder="Enter Your Blood Type" value={bloodType} onChange={(e) => {
-                            setbloodType(e.target.value)
-                        }}/>
-                    </div>  
-                    <h1 className="text-3xl font-Roboto text-zinc-800 mt-5">Step 2: Creating Report</h1>
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">YOUR AGE</label>
-                        <input type="number" min={0} className="font-OpenSans"
-                         value={Age} onChange={(e) => {
-                            setAge(e.target.value)
-                         }}/>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">GENDER</label>
-                        <select name="" id="" className="font-OpenSans" value={Gender} onChange={(e) => {
-                            setGender(e.target.value)
-                        }}>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">MEDICATIONS</label>
-                        <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" value={EmerMed} onChange={(e) => {
-                            setEmerMed(e.target.value)
-                        }} placeholder="List of medicines that you use on a regular basis"></textarea>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">PREVIOUS TREATMENTS</label>
-                        <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Any treatments we need to know aobut?" value={prevTreat} onChange={(e) => {
-                            setprevTreat(e.target.value)
-                        }}></textarea>
-                    </div>  
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">ALLERGIES</label>
-                        <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Any allergies? If so list them" value={Allergies} onChange={(e) => {
-                            setAllergies(e.target.value)
-                        }}></textarea>
-                    </div>  
+                    <div>
+                        <div className="grid place-items-center" ref={elementRef}>
+                            <h1 className="text-accent text-xl font-Roboto font-semibold mb-5">ID CARD PREVIEW</h1>
+                            <div className="grid grid-cols-1 gap-10 font-Roboto">
+                                <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
+                                    <div className="flex justify-between m-3">
+                                        <img src="/logo-text.png" alt="logo" className="w-[120px]" />
+                                        <h1 className="text-zinc-800">#{id}</h1>
+                                    </div>
+                                    <div className="grid place-items-center h-[20vh]">
+                                        <h1 className="my-5 text-[#59BF35] font-semibold">Scan In Emergency</h1>
+                                        <div style={{ height: "auto", margin: "0 auto", maxWidth: 100, width: "100%" }}>
+                                            <QRCode
+                                            size={256}
+                                            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                            value={id}
+                                            viewBox={`0 0 256 256`}
+                                            />
+                                        </div>
+                                        <h1 className="text-[#59BF35] font-semibold my-5">WEB REPORT</h1>
+                                    </div>
 
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">FAMILY HISTORY</label>
-                        <textarea name="" id="" cols="30" rows="10" className="font-OpenSans" placeholder="Does your family have a history of any disease?" value={famChronic} onChange={(e) => {
-                            setfamChronic(e.target.value)
-                        }}></textarea>
-                    </div>  
+                                    <div className="m-5 pt-5">
+                                        <h1 className="text-2xl font-bold">{Name}</h1>
+                                        <h1 className="text-xl">{phoneNo}</h1>
+                                    </div>
 
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">SMOKE OR ALCOHOL USE</label>
-                        <select name="" id="" className="font-OpenSans" value={smokeAlc}
-                        onChange={(e) => {
-                            setsmokeAlc(e.target.value)
-                        }}>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>  
+                                    <div className="flex justify-between m-5">
+                                        <div className="mt-5">
+                                            <h1 className="text-xl text-[#59BF35] font-semibold">Contacts</h1>
+                                            <h1 className="text-lg">{emergencyNoRelation1 + ' - ' + emergencyNo1}</h1>
+                                            <h1 className="text-lg">{emergencyNoRelation2 + ' - ' + emergencyNo2}</h1>
+                                        </div>
+                                        <div className="mt-5">
+                                            <h1 className="text-xl font-semibold">Blood Type</h1>
+                                            <h1 className="text-2xl text-[#59BF35] font-semibold">{bloodType}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
 
-                    <div className="grid gap-3">
-                        <label className="font-Roboto text-accent font-bold italic">HAVE YOU SERVED IN ARMED FORCES</label>
-                        <select name="" id="" className="font-OpenSans" value={armForce} onChange={(e) => {
-                            setarmForce(e.target.value)
-                        }}>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                        <button type="button" onClick={submitReport} className="bg-accent text-xl p-3 px-5 text-white font-OpenSans hover:bg-blue-600 transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>             
+                                </div>
+                            </div>
+                        </div>
+                    </div>         
                 </div>
         </div>
     </div>
