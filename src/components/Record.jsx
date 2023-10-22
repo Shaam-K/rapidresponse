@@ -43,7 +43,7 @@ function Record() {
 
   return (
     <div className='grid place-items-center'>
-        <div className='w-1/2'>
+        <div className='md:w-1/2 w-11/12'>
             <h1 className='text-3xl my-5 mt-10 border-b-2 border-accent font-Roboto font-semibold'>{Name}'s Report</h1>
             <div className='grid gap-10'>
                 <div className='grid gap-3'>

@@ -43,15 +43,15 @@ function Nav() {
      <div className="flex cursor-pointer">
       <Link to="/">
         <img
-          src="./logo.png"
+          src="/logo.png"
           alt="RRID-logo"
           className=""
           style={{'width': '140px', 'objectFit': 'contain'}}
         />
       </Link> 
     </div>
-      <div className="grid place-content-center font-semibold">
-        {user ? <div className="flex mx-auto">
+      <div className="grid place-items-center font-semibold">
+        {user ? <div className="flex md:text-lg">
                     <div onClick={() => {
                         window.location.href = '/record/' + Token
                     }} className="mx-10 cursor-pointer">

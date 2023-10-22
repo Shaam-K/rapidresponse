@@ -46,10 +46,11 @@ function CreateDetails() {
 
         setId(userData.data().token)
 
-        const recordData = await getDoc(doc(db, "records", id))
+        const recordData = await getDoc(doc(db, "records", userData.data().token))
 
         if (recordData.data() !== undefined) {
-            navigate('/')
+            alert('account already created');
+            window.location.href = '/';
         }
     })
     ();
@@ -93,7 +94,7 @@ function CreateDetails() {
 
     htmlToImageConvert();
 
-    navigate('/')
+    window.location.href = '/record/' + id
   }
 
 
@@ -107,7 +108,7 @@ function CreateDetails() {
         <div className="md:w-9/12 w-11/12">
             <h1 className="text-4xl font-Roboto my-5">Enter Your Details</h1>
                 <h1 className="text-3xl font-Roboto text-zinc-800 my-5">Step 1: Creating ID Card</h1>
-                <div className="grid grid-cols-2">
+                <div className="grid md:grid-cols-2 grid-cols-1">
                     <div className="grid my-5 gap-7">
                         <div className="grid gap-3">
                             <label className="font-Roboto text-accent font-bold italic">NAME</label>
@@ -211,8 +212,7 @@ function CreateDetails() {
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
-                        </div>
-                            <button type="button" onClick={submitReport} className="bg-accent text-xl p-3 px-5 text-white font-OpenSans hover:bg-blue-600 transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>    
+                        </div>    
                     </div>
                     <div>
                         <div className="grid place-items-center" ref={elementRef}>
@@ -258,7 +258,8 @@ function CreateDetails() {
                                 </div>
                             </div>
                         </div>
-                    </div>         
+                    </div>     
+                    <button type="button" onClick={submitReport} className="bg-accent text-xl p-3 px-5 text-white font-OpenSans hover:bg-blue-600 transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>    
                 </div>
         </div>
     </div>
