@@ -9,7 +9,7 @@ export default {
     extend: {
       colors: {
         "bg": "#fcfcfc",
-        "accent": '#134dba',
+        "accent": '#59BF35',
       },
       fontFamily: {
         'OpenSans': ['Open Sans', 'sans-serif'],

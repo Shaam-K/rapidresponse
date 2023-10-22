@@ -56,20 +56,6 @@ function CreateDetails() {
     ();
   }, [user,loading,error])
 
-  const htmlToImageConvert = () => {
-    toPng(elementRef.current, { cacheBust: false })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "my-id.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-
 
   const submitReport = async () => {
     const userData =  await getDoc(doc(db, "users", user.uid))
@@ -92,7 +78,18 @@ function CreateDetails() {
         armForce: armForce
     })
 
-    htmlToImageConvert();
+    await toPng(elementRef.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-id.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    alert('Created Successfully! Check Downloads for ID card')
 
     window.location.href = '/record/' + id
   }
@@ -108,7 +105,7 @@ function CreateDetails() {
         <div className="md:w-9/12 w-11/12">
             <h1 className="text-4xl font-Roboto my-5">Enter Your Details</h1>
                 <h1 className="text-3xl font-Roboto text-zinc-800 my-5">Step 1: Creating ID Card</h1>
-                <div className="grid md:grid-cols-2 grid-cols-1">
+                <div className="grid lg:grid-cols-2 grid-cols-1">
                     <div className="grid my-5 gap-7">
                         <div className="grid gap-3">
                             <label className="font-Roboto text-accent font-bold italic">NAME</label>
@@ -214,8 +211,8 @@ function CreateDetails() {
                             </select>
                         </div>    
                     </div>
-                    <div>
-                        <div className="grid place-items-center" ref={elementRef}>
+                    <div className="mx-10">
+                        <div className="grid place-items-center bg-white p-10" ref={elementRef}>
                             <h1 className="text-accent text-xl font-Roboto font-semibold mb-5">ID CARD PREVIEW</h1>
                             <div className="grid grid-cols-1 gap-10 font-Roboto">
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
@@ -254,12 +251,26 @@ function CreateDetails() {
                                     </div>
                                 </div>
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
+                                    <div className="flex justify-between m-3">
+                                        <img src="/logo-text.png" alt="logo" className="w-[120px]" />
+                                        <h1 className="text-zinc-800">#{id}</h1>
+                                    </div>
+                                    <div className="grid gap-5">
+                                        <div className="grid gap-3 m-3 font-Roboto text-[#59BF35]">
+                                            <h1 className="text-2xl mt-5 font-semibold">Disclaimer</h1>
+                                            <h1 className="font-OpenSans">By using this card you are agreeing to safekeep the card from unwanted people. Know that the data set by you is visible for anyone that scans the QR Code.</h1>
+                                        </div>
 
+                                        <div className="grid gap-3 m-3 font-Roboto text-[#59BF35]">
+                                            <h1 className="text-2xl mt-5 font-semibold">Note</h1>
+                                            <h1>Scratched cards can create inaccuracies for the QR Code. If so, you can visit <span className="font-semibold">{'https://rapidresponse.vercel.app/record/'+id}</span></h1>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>     
-                    <button type="button" onClick={submitReport} className="bg-accent text-xl p-3 px-5 text-white font-OpenSans hover:bg-blue-600 transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>    
+                    <button type="button" onClick={submitReport} className="bg-zinc-800 text-xl p-3 px-5 text-white font-OpenSans hover:bg-accent transition-all cursor-pointer rounded-sm font-semibold" value="Submit"> Submit </button>    
                 </div>
         </div>
     </div>

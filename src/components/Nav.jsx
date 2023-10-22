@@ -9,6 +9,8 @@ function Nav() {
 
   let navigate = useNavigate();
 
+  const [Report, setReport] = useState(false);
+
   const [Name, setName] = useState("");
   const [Token, setToken] = useState("");
   const [user,loading,error] = useAuthState(auth);
@@ -22,6 +24,13 @@ function Nav() {
         if (user) {
             const userData = await getDoc(doc(db, "users",
             user.uid))
+
+
+            const recordData = await getDoc(doc(db, "records", userData.data().token))
+
+            if (recordData.data() !== undefined) {
+              setReport(true)
+            }
 
             setName(userData.data().name);
             setToken(userData.data().token)
@@ -38,7 +47,7 @@ function Nav() {
   };
 
   return (
-    <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-accent text-white">
+    <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-zinc-800 text-white">
     <div className="flex justify-between md:w-9/12 w-11/12 p-2 my-2">
      <div className="flex cursor-pointer">
       <Link to="/">
@@ -52,11 +61,14 @@ function Nav() {
     </div>
       <div className="grid place-items-center font-semibold">
         {user ? <div className="flex md:text-lg">
-                    <div onClick={() => {
-                        window.location.href = '/record/' + Token
-                    }} className="mx-10 cursor-pointer">
-                        My Report
-                    </div>
+                  {
+                    Report ?                     <div onClick={() => {
+                      window.location.href = '/record/' + Token
+                  }} className="mx-10 cursor-pointer">
+                      My Report
+                  </div> :
+                    <span></span>
+                  }
                     <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out ({Name})</h1>
             </div>: <Link to="/signup">
             Login
