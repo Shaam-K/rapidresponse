@@ -47,6 +47,10 @@ function Nav() {
     });
   };
 
+  function dropDown() {
+    document.getElementById("show_Drop").classList.toggle("hidden");
+  }
+
   return (
     <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-zinc-800 text-white">
     <div className="flex justify-between md:w-9/12 w-11/12 p-2 my-2">
@@ -61,35 +65,40 @@ function Nav() {
       </Link> 
     </div>
       <div className="grid place-items-center font-semibold">
-        {user ? <div className="flex md:text-lg">
-                  {
-                    Report ?                   
-                    <>
-                        <div onClick={() => {
-                          window.location.href = '/record/' + Token
-                      }} className="mx-10 cursor-pointer">
-                          My Report
+        {Report ?
+        <>
+         <span className="md:text-lg text-white">
+                      <h1 className="text-2xl cursor-pointer" onClick={() => {
+                        dropDown();
+                      }}>{Name}</h1>
+                      <div id="show_Drop" className="hidden absolute md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
+                          <h1 onClick={() => {
+                                window.location.href = '/record/' + Token
+                            }} className="cursor-pointer">
+                                My Report
+                            </h1>
+                            <h1 onClick={() => {
+                              window.location.href = '/edit/' + Token
+                          }} className="cursor-pointer">
+                              Edit Report
+                          </h1>
+                          <h1 onClick={() => {
+                            window.location.href = '/delete/' + Token
+                        }} className="cursor-pointer">
+                            Delete Report
+                        </h1> 
+                        <h1 onClick={() => {
+                            window.location.href = '/create/'
+                        }} className="cursor-pointer">
+                            Create Report
+                        </h1> 
+                        <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
                       </div>
-                      <div onClick={() => {
-                        window.location.href = '/edit/' + Token
-                    }} className="mx-10 cursor-pointer">
-                        Edit Report
-                    </div>
-                    <div onClick={() => {
-                      window.location.href = '/delete/' + Token
-                  }} className="mx-10 cursor-pointer">
-                      Delete Report
-                  </div> 
-                    </> 
-                  : <div onClick={() => {
-                      window.location.href = '/create/'
-                  }} className="mx-10 cursor-pointer">
-                      Create Report
-                  </div> 
-                  }
-                    <h1>{Name}</h1>
-                    <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
-            </div>: <Link to="/signup">
+    
+            </span>
+            </> 
+            : 
+            <Link to="/signup">
             Login
         </Link>}
     </div>
