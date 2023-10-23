@@ -6,6 +6,9 @@ import Nav from './components/Nav';
 import CreateAcc from './components/CreateAcc';
 import CreateDetails from './components/CreateDetails';
 import Record from './components/Record';
+import Edit from './components/Edit';
+import Delete from './components/Delete';
+
 
 
 
@@ -19,6 +22,8 @@ function App() {
         <Route path="/signup" element={<CreateAcc/>}></Route>
         <Route path="/create" element={<CreateDetails/>}></Route>
         <Route path="/record/:recordId" element={<Record/>}></Route>
+        <Route path="/edit/:recordId" element={<Edit/>}></Route>
+        <Route path="/delete/:recordId" element={<Delete/>}></Route>
       </Routes>
     </Router>
   )

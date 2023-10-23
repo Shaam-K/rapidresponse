@@ -1,14 +1,17 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import QRCode from "react-qr-code";
+
 
 import { toPng } from 'html-to-image';
 
 
 function CreateDetails() {
+
+  const {recordId} = useParams();
   let navigate = useNavigate();
 
   const elementRef = useRef(null);
@@ -46,23 +49,34 @@ function CreateDetails() {
 
         setId(userData.data().token)
 
-        const recordData = await getDoc(doc(db, "records", userData.data().token))
+        const recordData = await getDoc(doc(db, "records", recordId))
 
-        if (recordData.data() !== undefined) {
-            alert('account already created');
+        if (recordData.data() == undefined) {
+            alert('Report does not exist');
             window.location.href = '/';
         }
+
+
+        setName(recordData.data().name)
+        setphoneNo(recordData.data().phoneNo)
+        setbloodType(recordData.data().bloodType)
+        setAge(recordData.data().age)
+        setGender(recordData.data().gender)
+        setEmerMed(recordData.data().emerMed)
+        setprevTreat(recordData.data().prevTreat)
+        setAllergies(recordData.data().allergies)
+        setfamChronic(recordData.data().famChronic)
+        setsmokeAlc(recordData.data().smokeAlc)
+        setarmForce(recordData.data().armForce)
     })
     ();
   }, [user,loading,error])
 
 
   const submitReport = async () => {
-    const userData =  await getDoc(doc(db, "users", user.uid))
 
-    const token = userData.data().token
     
-    await setDoc(doc(db,"records",token), {
+    await updateDoc(doc(db,"records",id), {
         userId: user.uid,
         name: Name,
         phoneNo: phoneNo,

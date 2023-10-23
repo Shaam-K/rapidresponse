@@ -1,7 +1,8 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { db } from '../config/firebase';
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { auth, db } from '../config/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Record() {
 
@@ -23,28 +24,39 @@ function Record() {
 
   useEffect(() => {
     (async () => {
-        const recordData = await getDoc(doc(db, "records", recordId))
 
-        setName(recordData.data().name)
-        setphoneNo(recordData.data().phoneNo)
-        setcontact1(recordData.data().contact1)
-        setcontact2(recordData.data().contact2)
-        setbloodType(recordData.data().bloodType)
-        setAge(recordData.data().age)
-        setGender(recordData.data().gender)
-        setEmerMed(recordData.data().emerMed)
-        setprevTreat(recordData.data().prevTreat)
-        setAllergies(recordData.data().allergies)
-        setfamChronic(recordData.data().famChronic)
-        setsmokeAlc(recordData.data().smokeAlc)
-        setarmForce(recordData.data().armForce)
-    })()
+        getDoc(doc(db, "records", recordId)).then((record) => {
+
+            if (record.data() == undefined) {
+                alert('Report does not exist')
+                window.location.href = '/'
+            }
+
+
+            setName(record.data().name)
+            setphoneNo(record.data().phoneNo)
+            setcontact1(record.data().contact1)
+            setcontact2(record.data().contact2)
+            setbloodType(record.data().bloodType)
+            setAge(record.data().age)
+            setGender(record.data().gender)
+            setEmerMed(record.data().emerMed)
+            setprevTreat(record.data().prevTreat)
+            setAllergies(record.data().allergies)
+            setfamChronic(record.data().famChronic)
+            setsmokeAlc(record.data().smokeAlc)
+            setarmForce(record.data().armForce)    
+        })
+
+    })()    
 }, [recordId]);
 
   return (
     <div className='grid place-items-center'>
-        <div className='md:w-1/2 w-11/12'>
-            <h1 className='text-3xl my-5 mt-10 border-b-2 border-accent font-Roboto font-semibold'>{Name}'s Report</h1>
+        <div className='md:w-1/2 w-11/12 my-5'>
+            <div className='flex justify-between border-b-2 border-accent mt-10 mb-5'>
+                <h1 className='text-3xl font-Roboto font-semibold'>{Name}'s Report</h1>
+            </div>
             <div className='grid gap-10'>
                 <div className='grid gap-3'>
                     <h1 className='text-2xl text-accent font-bold font-Roboto'>NAME</h1>

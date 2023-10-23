@@ -13,6 +13,7 @@ function Nav() {
 
   const [Name, setName] = useState("");
   const [Token, setToken] = useState("");
+
   const [user,loading,error] = useAuthState(auth);
 
 
@@ -62,17 +63,32 @@ function Nav() {
       <div className="grid place-items-center font-semibold">
         {user ? <div className="flex md:text-lg">
                   {
-                    Report ?                     <div onClick={() => {
-                      window.location.href = '/record/' + Token
+                    Report ?                   
+                    <>
+                        <div onClick={() => {
+                          window.location.href = '/record/' + Token
+                      }} className="mx-10 cursor-pointer">
+                          My Report
+                      </div>
+                      <div onClick={() => {
+                        window.location.href = '/edit/' + Token
+                    }} className="mx-10 cursor-pointer">
+                        Edit Report
+                    </div>
+                    <div onClick={() => {
+                      window.location.href = '/delete/' + Token
                   }} className="mx-10 cursor-pointer">
-                      My Report
-                  </div> : <div onClick={() => {
+                      Delete Report
+                  </div> 
+                    </> 
+                  : <div onClick={() => {
                       window.location.href = '/create/'
                   }} className="mx-10 cursor-pointer">
                       Create Report
                   </div> 
                   }
-                    <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out ({Name})</h1>
+                    <h1>{Name}</h1>
+                    <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
             </div>: <Link to="/signup">
             Login
         </Link>}
