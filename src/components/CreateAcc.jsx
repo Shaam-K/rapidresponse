@@ -14,7 +14,7 @@ function CreateAcc() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/create');
+    if (user) return;
   },[loading,user]);
 
 
@@ -26,21 +26,24 @@ function CreateAcc() {
 
 
           if (userData.data() == undefined) {
-            setDoc(doc(db, "users", result.user.uid), {
+            await setDoc(doc(db, "users", result.user.uid), {
               uid: result.user.uid,
               name: result.user.displayName,
               token: result.user.uid.slice(0, 4) +
               Math.trunc(Math.random() * 10).toString() +
               Date.now().toString().slice(-6, -1)
             })
+            navigate('/create')
+          }
+          else {
+            navigate('/')
           }
         }
       });
     } catch(err) {
       alert("Error Logging In")
-      navigate('/signup')
+      navigate('/')
     }
-    navigate('/create')
   }
 
   return (

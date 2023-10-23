@@ -66,8 +66,11 @@ function Nav() {
                       window.location.href = '/record/' + Token
                   }} className="mx-10 cursor-pointer">
                       My Report
-                  </div> :
-                    <span></span>
+                  </div> : <div onClick={() => {
+                      window.location.href = '/create/'
+                  }} className="mx-10 cursor-pointer">
+                      Create Report
+                  </div> 
                   }
                     <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out ({Name})</h1>
             </div>: <Link to="/signup">

@@ -211,9 +211,8 @@ function CreateDetails() {
                             </select>
                         </div>    
                     </div>
-                    <div className="mx-10">
+                    <div className="mx-auto grid place-content-center">
                         <div className="grid place-items-center bg-white p-10" ref={elementRef}>
-                            <h1 className="text-accent text-xl font-Roboto font-semibold mb-5">ID CARD PREVIEW</h1>
                             <div className="grid grid-cols-1 gap-10 font-Roboto">
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
                                     <div className="flex justify-between m-3">
