@@ -87,20 +87,25 @@ function Nav() {
                         }} className="cursor-pointer">
                             Delete Report
                         </h1> 
-                        <h1 onClick={() => {
-                            window.location.href = '/create/'
-                        }} className="cursor-pointer">
-                            Create Report
-                        </h1> 
                         <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
                       </div>
     
             </span>
             </> 
-            : 
-            <Link to="/signup">
-            Login
-        </Link>}
+            :<>
+            <div className="flex">
+              <Link className="mx-7" to="/signup">
+                Login
+            </Link> 
+            <h1 onClick={() => {
+                              window.location.href = '/create/'
+                          }} className="cursor-pointer">
+                              Create Report
+                          </h1>  
+            </div>
+            </>
+
+        }
     </div>
   </div>
 </nav>
