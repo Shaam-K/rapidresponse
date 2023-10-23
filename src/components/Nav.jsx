@@ -97,11 +97,6 @@ function Nav() {
               <Link className="mx-7" to="/signup">
                 Login
             </Link> 
-            <h1 onClick={() => {
-                              window.location.href = '/create/'
-                          }} className="cursor-pointer">
-                              Create Report
-                          </h1>  
             </div>
             </>
 

@@ -95,6 +95,24 @@ function CreateDetails() {
     window.location.href = '/record/' + id
   }
 
+  const createId = async () => {
+        await toPng(elementRef.current, { cacheBust: false })
+        .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-id.png";
+        link.href = dataUrl;
+        link.click();
+        })
+        .catch((err) => {
+        console.log(err);
+        });
+
+    alert('Created Successfully! Check Downloads for ID card')
+
+    }
+
+  
+
 
     // console.log(Name,phoneNo,emergencyNoRelation1 + '-' + emergencyNo1, emergencyNoRelation2 + '-' + emergencyNo2, bloodType, Age, Gender, EmerMed, prevTreat, Allergies,famChronic, smokeAlc, armForce)
 
@@ -104,7 +122,12 @@ function CreateDetails() {
   return (
     <div className="grid place-items-center my-10">
         <div className="md:w-9/12 w-11/12">
-            <h1 className="text-4xl font-Roboto my-5">Enter Your Details</h1>
+            <div className="flex my-5">
+                    <h1 className="text-4xl font-Roboto mr-5">Enter Your Details</h1>
+                    <span className="text-2xl font-Roboto text-accent font-semibold border-accent cursor-pointer" onClick={() => {
+                        createId()
+                    }}>(Download ID Card)</span>
+                </div>
                 <h1 className="text-3xl font-Roboto text-zinc-800 my-5">Step 1: Creating ID Card</h1>
                 <div className="grid lg:grid-cols-2 grid-cols-1">
                     <div className="grid my-5 gap-7">

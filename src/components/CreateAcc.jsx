@@ -14,7 +14,7 @@ function CreateAcc() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) return;
+    if (user) navigate('/create');
   },[loading,user]);
 
 
@@ -33,10 +33,6 @@ function CreateAcc() {
               Math.trunc(Math.random() * 10).toString() +
               Date.now().toString().slice(-6, -1)
             })
-            navigate('/create')
-          }
-          else {
-            navigate('/')
           }
         }
       });
