@@ -211,15 +211,15 @@ function CreateDetails() {
                             </select>
                         </div>    
                     </div>
-                    <div className="mx-auto grid place-content-center">
-                        <div className="grid place-items-center bg-white p-10" ref={elementRef}>
+                    <div className="">
+                        <div className="grid place-items-center place-content-center bg-white p-10 w-full overflow-scroll" ref={elementRef}>
                             <div className="grid grid-cols-1 gap-10 font-Roboto">
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
                                     <div className="flex justify-between m-3">
                                         <img src="/logo-text.png" alt="logo" className="w-[120px]" />
                                         <h1 className="text-zinc-800">#{id}</h1>
                                     </div>
-                                    <div className="grid place-items-center h-[20vh]">
+                                    <div className="grid place-items-center h-[175px]">
                                         <h1 className="my-5 text-[#59BF35] font-semibold">Scan In Emergency</h1>
                                         <div style={{ height: "auto", margin: "0 auto", maxWidth: 100, width: "100%" }}>
                                             <QRCode
