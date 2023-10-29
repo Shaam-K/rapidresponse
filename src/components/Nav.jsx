@@ -1,56 +1,27 @@
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useNavigate} from "react-router-dom";
-import { auth, db } from "../config/firebase";
-import { signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { UserAuth } from '../context/AuthContext';
 
-function Nav() {
+const Nav = () => {
 
-  let navigate = useNavigate();
-
-  const [Report, setReport] = useState(false);
-
-  const [Name, setName] = useState("");
-  const [Token, setToken] = useState("");
-
-  const [user,loading,error] = useAuthState(auth);
-
-
-  useEffect(() => {
-    (async () => {
-        if (loading) return;
-        if (error) navigate('/login');
-
-        if (user) {
-            const userData = await getDoc(doc(db, "users",
-            user.uid))
-
-
-            const recordData = await getDoc(doc(db, "records", userData.data().token))
-
-            if (recordData.data() !== undefined) {
-              setReport(true)
-            }
-
-            setName(userData.data().name);
-            setToken(userData.data().token)
-        }
-    })
-    ();
-  })
-
-
-  const signUserOut = () => {
-    signOut(auth).then(() => {
-        window.location.pathname = "/";
-    });
-  };
+  const {user,logOut,token} = UserAuth();
+  
+  const navigate = useNavigate();
 
   function dropDown() {
     document.getElementById("show_Drop").classList.toggle("hidden");
   }
 
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      navigate('/');
+    } catch (error) {
+      console.log("Error Logging In");
+    }
+  } 
+
+  
   return (
     <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-zinc-800 text-white">
     <div className="flex justify-between md:w-9/12 w-11/12 p-2 my-2">
@@ -65,42 +36,38 @@ function Nav() {
       </Link> 
     </div>
       <div className="grid place-items-center font-semibold">
-        {Report ?
-        <>
-         <span className="md:text-lg text-white">
-                      <h1 className="text-2xl cursor-pointer" onClick={() => {
+
+        {user?.displayName ?           <span className="md:text-lg text-white">
+                      <h1 className="text-xl cursor-pointer" onClick={() => {
                         dropDown();
-                      }}>{Name}</h1>
+                      }}>{user.displayName}</h1>
                       <div id="show_Drop" className="hidden absolute md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
-                          <h1 onClick={() => {
-                                window.location.href = '/record/' + Token
-                            }} className="cursor-pointer">
+                          <h1 className="cursor-pointer" onClick={() => {
+                            window.location.href = "/record/" + token
+                          }}>
                                 My Report
                             </h1>
-                            <h1 onClick={() => {
-                              window.location.href = '/edit/' + Token
-                          }} className="cursor-pointer">
+                            <h1 className="cursor-pointer" onClick={() => {
+                              window.location.href = '/edit/' + token
+                            }}>
                               Edit Report
                           </h1>
-                          <h1 onClick={() => {
-                            window.location.href = '/delete/' + Token
-                        }} className="cursor-pointer">
+                          <h1 className="cursor-pointer" onClick={() => {
+                            window.location.href = '/delete/' + token
+                          }}>
                             Delete Report
                         </h1> 
-                        <h1 className="cursor-pointer" onClick={signUserOut}>Sign Out</h1>
+                        <h1 className="cursor-pointer" onClick={() => {
+                          handleSignOut();
+                        }}>Sign Out</h1>
                       </div>
     
-            </span>
-            </> 
-            :<>
-            <div className="flex">
+            </span>: 
+            <div className="flex textl-xl cursor-pointer">
               <Link className="mx-7" to="/signup">
                 Login
-            </Link> 
-            </div>
-            </>
-
-        }
+            </Link>             
+            </div>}
     </div>
   </div>
 </nav>
