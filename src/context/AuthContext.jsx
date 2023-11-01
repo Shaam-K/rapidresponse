@@ -36,19 +36,20 @@ export const AuthContextProvider = ({children}) => {
                                       Math.trunc(Math.random() * 10).toString() +
                                       Date.now().toString().slice(-6, -1)
                         })
-
-                        navigate('/create');
                         
                     } catch(err) {
                         console.log(err);
     
                     }    
-                }   
-            }
 
+                    navigate('/create');
+                } 
+
+                navigate('/');
+                
+            }
         })
     }
-
 
     const logOut = () => {
         signOut(auth)
@@ -63,6 +64,7 @@ export const AuthContextProvider = ({children}) => {
             unsubscribe();
         }
     },[user])
+    
 
     useEffect(() => {
         (async () => {

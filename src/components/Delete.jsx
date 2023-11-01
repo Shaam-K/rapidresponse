@@ -1,17 +1,30 @@
 import { deleteDoc, doc, getDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { auth, db } from '../config/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { db } from '../config/firebase';
+import { UserAuth } from '../context/AuthContext';
 
 
 function Delete() {
     
     const {recordId} = useParams();
 
-    
+    const {user,logOut} = UserAuth();
 
     let navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            const userData = await getDoc(doc(db,"users", user.uid))
+
+
+            if(userData.data().token != recordId) {
+                alert('Access Denied')
+                navigate('/');
+            }
+        })
+        ();
+    },[user.uid,recordId])
 
 
     const deleteRecord = async () => {
@@ -19,7 +32,9 @@ function Delete() {
 
         await deleteDoc(Record);
 
-        alert('Your Report has been deleted')
+        await logOut();
+
+        alert('Your Report has been deleted');
 
         navigate('/')
 

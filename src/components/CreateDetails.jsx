@@ -1,22 +1,17 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../config/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useRef, useState } from "react";
 import QRCode from "react-qr-code";
 
 import { toPng } from 'html-to-image';
+import { UserAuth } from "../context/AuthContext";
+import { db } from "../config/firebase";
 
 
 function CreateDetails() {
-  let navigate = useNavigate();
 
   const elementRef = useRef(null);
 
-  const [user, loading, error] = useAuthState(auth);
-  
-
-  const [id, setId] = useState("");
+  const {user,token} = UserAuth();
 
   const [Name, setName] = useState("");
   const [phoneNo, setphoneNo] = useState("");
@@ -35,32 +30,7 @@ function CreateDetails() {
   const [armForce, setarmForce] = useState("Yes");
 
 
-  useEffect(() => {
-    (async () => {
-        if (loading) return;
-        if (error) navigate('/signup')
-        if (!user) {
-            navigate('/signup')
-        }
-        const userData = await getDoc(doc(db, "users", user.uid))
-
-        setId(userData.data().token)
-
-        const recordData = await getDoc(doc(db, "records", userData.data().token))
-
-        if (recordData.data() !== undefined) {
-            alert('account already created');
-            window.location.href = '/';
-        }
-    })
-    ();
-  }, [user,loading,error])
-
-
   const submitReport = async () => {
-    const userData =  await getDoc(doc(db, "users", user.uid))
-
-    const token = userData.data().token
     
     await setDoc(doc(db,"records",token), {
         userId: user.uid,
@@ -92,7 +62,7 @@ function CreateDetails() {
 
     alert('Created Successfully! Check Downloads for ID card')
 
-    window.location.href = '/record/' + id
+    window.location.href = '/record/' + token;
   }
 
   const createId = async () => {
@@ -241,7 +211,7 @@ function CreateDetails() {
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
                                     <div className="flex justify-between m-3">
                                         <img src="/logo-text.png" alt="logo" className="w-[120px]" />
-                                        <h1 className="text-zinc-800">#{id}</h1>
+                                        <h1 className="text-zinc-800">#{token}</h1>
                                     </div>
                                     <div className="grid place-items-center h-[175px]">
                                         <h1 className="my-5 text-[#59BF35] font-semibold">Scan In Emergency</h1>
@@ -249,7 +219,7 @@ function CreateDetails() {
                                             <QRCode
                                             size={256}
                                             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                            value={'https://rapidresponse.vercel.app/record/'+id}
+                                            value={'https://rapidresponse.vercel.app/record/'+token}
                                             viewBox={`0 0 256 256`}
                                             />
                                         </div>
@@ -276,7 +246,7 @@ function CreateDetails() {
                                 <div className="w-[350px] h-[500px] bg-[#FDFDFD] rounded-md">
                                     <div className="flex justify-between m-3">
                                         <img src="/logo-text.png" alt="logo" className="w-[120px]" />
-                                        <h1 className="text-zinc-800">#{id}</h1>
+                                        <h1 className="text-zinc-800">#{token}</h1>
                                     </div>
                                     <div className="grid gap-5">
                                         <div className="grid gap-3 m-3 font-Roboto text-[#59BF35]">
@@ -286,7 +256,7 @@ function CreateDetails() {
 
                                         <div className="grid gap-3 m-3 font-Roboto text-[#59BF35]">
                                             <h1 className="text-2xl mt-5 font-semibold">Note</h1>
-                                            <h1>Scratched cards can create inaccuracies for the QR Code. If so, you can visit <span className="font-semibold">{'https://rapidresponse.vercel.app/record/'+id}</span></h1>
+                                            <h1>Scratched cards can create inaccuracies for the QR Code. If so, you can visit <span className="font-semibold">{'https://rapidresponse.vercel.app/record/'+token}</span></h1>
                                         </div>
                                     </div>
                                 </div>

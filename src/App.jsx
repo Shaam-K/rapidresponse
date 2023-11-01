@@ -10,8 +10,7 @@ import Edit from './components/Edit';
 import Delete from './components/Delete';
 
 import { AuthContextProvider } from './context/AuthContext';
-
-
+import Protected from './components/Protected';
 
 
 function App() {
@@ -21,12 +20,25 @@ function App() {
       <AuthContextProvider>
         <Nav/>
         <Routes>
-          <Route path="/" element={<Home/>}></Route>
-          <Route path="/signup" element={<CreateAcc/>}></Route>
-          <Route path="/create" element={<CreateDetails/>}></Route>
-          <Route path="/record/:recordId" element={<Record/>}></Route>
-          <Route path="/edit/:recordId" element={<Edit/>}></Route>
-          <Route path="/delete/:recordId" element={<Delete/>}></Route>
+          <Route path="/" element={<Home/>} />
+          <Route path="/signup" element={<CreateAcc/>}  />
+          <Route path="/create" element={
+          <Protected>
+              <CreateDetails/>
+          </Protected>
+          
+          } />
+          <Route path="/record/:recordId" element={<Record/>} />
+          <Route path="/edit/:recordId" element={
+          <Protected>
+            <Edit/>
+          </Protected>
+          } />
+          <Route path="/delete/:recordId" element={
+          <Protected>
+            <Delete/>
+          </Protected>
+          } />
         </Routes>
       </AuthContextProvider>
     </>

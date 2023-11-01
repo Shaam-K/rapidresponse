@@ -1,23 +1,35 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { auth, db } from "../config/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { db } from "../config/firebase";
 import QRCode from "react-qr-code";
 
-
 import { toPng } from 'html-to-image';
+import { UserAuth } from "../context/AuthContext";
 
 
 function CreateDetails() {
 
-  const {recordId} = useParams();
-  let navigate = useNavigate();
+    const {recordId} = useParams();
+
+    const {user} = UserAuth();
+
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            const userData = await getDoc(doc(db,"users", user.uid))
+
+
+            if(userData.data().token != recordId) {
+                alert('Access Denied');
+                navigate('/');
+            }
+        })
+        ();
+    },[user.uid,recordId])
 
   const elementRef = useRef(null);
-
-  const [user, loading, error] = useAuthState(auth);
-  
 
   const [id, setId] = useState("");
 
@@ -40,11 +52,6 @@ function CreateDetails() {
 
   useEffect(() => {
     (async () => {
-        if (loading) return;
-        if (error) navigate('/signup')
-        if (!user) {
-            navigate('/signup')
-        }
         const userData = await getDoc(doc(db, "users", user.uid))
 
         setId(userData.data().token)
@@ -53,7 +60,7 @@ function CreateDetails() {
 
         if (recordData.data() == undefined) {
             alert('Report does not exist');
-            window.location.href = '/';
+            navigate('/');
         }
 
 
@@ -70,11 +77,10 @@ function CreateDetails() {
         setarmForce(recordData.data().armForce)
     })
     ();
-  }, [user,loading,error])
+  }, [user])
 
 
   const submitReport = async () => {
-
     
     await updateDoc(doc(db,"records",id), {
         userId: user.uid,

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 
@@ -20,6 +19,7 @@ const Nav = () => {
       console.log("Error Logging In");
     }
   } 
+  
 
   
   return (

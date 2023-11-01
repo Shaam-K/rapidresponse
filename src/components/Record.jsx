@@ -1,8 +1,7 @@
 import { doc, getDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import { auth, db } from '../config/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { db } from '../config/firebase';
 
 function Record() {
 
@@ -22,6 +21,8 @@ function Record() {
   const [smokeAlc, setsmokeAlc] = useState("Yes");
   const [armForce, setarmForce] = useState("Yes");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     (async () => {
 
@@ -29,7 +30,7 @@ function Record() {
 
             if (record.data() == undefined) {
                 alert('Report does not exist')
-                window.location.href = '/'
+                navigate('/');
             }
 
 
@@ -48,14 +49,15 @@ function Record() {
             setarmForce(record.data().armForce)    
         })
 
-    })()    
+    })
+    ();    
 }, [recordId]);
 
   return (
     <div className='grid place-items-center'>
         <div className='md:w-1/2 w-11/12 my-5'>
-            <div className='flex justify-between border-b-2 border-accent mt-10 mb-5'>
-                <h1 className='text-3xl font-Roboto font-semibold'>{Name}'s Report</h1>
+            <div className='flex justify-between border-b-2 border-accent my-5'>
+                <h1 className='text-3xl font-Roboto font-semibold'>{Name}&#39; Report</h1> 
             </div>
             <div className='grid gap-10'>
                 <div className='grid gap-3'>

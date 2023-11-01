@@ -1,23 +1,6 @@
-// import { useNavigate } from "react-router-dom"
-// import { auth, provider, db } from "../config/firebase";
-// import { useEffect } from "react";
-// import { signInWithPopup } from "firebase/auth";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { getDoc, setDoc, doc } from "firebase/firestore";
-
-
 import { UserAuth } from "../context/AuthContext";
 
 function CreateAcc() {
-
-  // let navigate = useNavigate();
-
-  // const [user,loading] = useAuthState(auth);
-
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) navigate('/create');
-  // },[loading,user]);
 
   const {googleSignIn} = UserAuth();
 
@@ -25,34 +8,11 @@ function CreateAcc() {
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
+
     } catch (err) {
       console.log(err);
     }
   }
-
-
-
-    // try {
-    //   signInWithPopup(auth, provider).then(async(result) => {
-    //     if(result.user) {
-    //       const userData = await getDoc(doc(db, "users", result.user.uid))
-
-
-    //       if (userData.data() == undefined) {
-    //         await setDoc(doc(db, "users", result.user.uid), {
-    //           uid: result.user.uid,
-    //           name: result.user.displayName,
-    //           token: result.user.uid.slice(0, 4) +
-    //           Math.trunc(Math.random() * 10).toString() +
-    //           Date.now().toString().slice(-6, -1)
-    //         })
-    //       }
-    //     }
-    //   });
-    // } catch(err) {
-    //   alert("Error Logging In")
-    //   navigate('/')
-    // }
 
   return (
     <div className='grid place-items-center'>
