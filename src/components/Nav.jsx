@@ -39,7 +39,7 @@ const Nav = () => {
                       <h1 className="text-xl cursor-pointer" onClick={() => {
                         dropDown();
                       }}>{user.displayName}</h1>
-                      <div id="show_Drop" className="hidden absolute md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
+                      <div id="show_Drop" className="hidden absolute lg:right md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
                         <h1 className="cursor-pointer" onClick={() => {
                             window.location.href = "/record/" + token
                           }}>
