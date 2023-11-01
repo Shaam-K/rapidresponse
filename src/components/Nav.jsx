@@ -4,7 +4,7 @@ import { UserAuth } from '../context/AuthContext';
 const Nav = () => {
 
   const {user,logOut,token} = UserAuth();
-  
+
   const navigate = useNavigate();
 
   function dropDown() {
@@ -19,8 +19,6 @@ const Nav = () => {
       console.log("Error Logging In");
     }
   } 
-  
-
   
   return (
     <nav className="grid place-items-center sticky top-0 bg-bg_main font-Roboto text-lg z-100 bg-zinc-800 text-white">
@@ -42,11 +40,11 @@ const Nav = () => {
                         dropDown();
                       }}>{user.displayName}</h1>
                       <div id="show_Drop" className="hidden absolute md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
-                          <h1 className="cursor-pointer" onClick={() => {
+                        {token ?                           <h1 className="cursor-pointer" onClick={() => {
                             window.location.href = "/record/" + token
                           }}>
                                 My Report
-                            </h1>
+                            </h1> : <Link to="/create">Create Report</Link>}
                             <h1 className="cursor-pointer" onClick={() => {
                               window.location.href = '/edit/' + token
                             }}>

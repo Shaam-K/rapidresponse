@@ -36,7 +36,7 @@ function Delete() {
 
         alert('Your Report has been deleted');
 
-        navigate('/')
+        navigate('/');
 
     }
 

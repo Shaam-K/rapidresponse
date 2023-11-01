@@ -40,9 +40,9 @@ export const AuthContextProvider = ({children}) => {
                     } catch(err) {
                         console.log(err);
     
-                    }    
-
-                    navigate('/create');
+                    } 
+                    
+                    navigate('/create')
                 } 
 
                 navigate('/');

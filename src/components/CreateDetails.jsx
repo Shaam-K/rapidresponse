@@ -1,5 +1,5 @@
-import { doc, setDoc } from "firebase/firestore";
-import { useRef, useState } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 
 import { toPng } from 'html-to-image';
@@ -80,6 +80,18 @@ function CreateDetails() {
     alert('Created Successfully! Check Downloads for ID card')
 
     }
+
+    useEffect(() => {
+        (async () => {
+            const recData = await getDoc(doc(db,"records", token))
+
+            if (recData.data() != undefined) {
+                alert('already created');
+                window.location.href = '/';
+            }
+        })
+        ();
+    },[token])
 
   
 
