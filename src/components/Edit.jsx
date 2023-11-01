@@ -254,9 +254,9 @@ function CreateDetails() {
                         </div>    
                     </div>
                     <div className="">
-                        <div className="grid place-items-center place-content-center bg-white p-10 w-full overflow-scroll" ref={elementRef}>
-                            <div className="grid grid-cols-1 gap-10 font-Roboto">
-                                <div className="lg:w-[350px] lg:h-[500px] bg-[#FDFDFD] rounded-md">
+                        <div className="grid place-items-center place-content-center bg-white md:p-10 p-3 w-full overflow-scroll" ref={elementRef}>
+                            <div className="grid grid-cols-1 gap-10 font-Roboto w-full">
+                                <div className="md:w-[350px] md:h-[500px] bg-[#FDFDFD] rounded-md">
                                     <div className="flex justify-between m-3">
                                         <img src="/logo-text.png" alt="logo" className="w-[120px]" />
                                         <h1 className="text-zinc-800">#{id}</h1>
