@@ -40,11 +40,11 @@ const Nav = () => {
                         dropDown();
                       }}>{user.displayName}</h1>
                       <div id="show_Drop" className="hidden absolute md:right-auto right-0 bg-zinc-800 p-5 text-right grid gap-2 md:w-[10vw] w-[50vw]">
-                        {token ?                           <h1 className="cursor-pointer" onClick={() => {
+                        <h1 className="cursor-pointer" onClick={() => {
                             window.location.href = "/record/" + token
                           }}>
                                 My Report
-                            </h1> : <Link to="/create">Create Report</Link>}
+                            </h1>
                             <h1 className="cursor-pointer" onClick={() => {
                               window.location.href = '/edit/' + token
                             }}>
